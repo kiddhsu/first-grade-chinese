@@ -63,7 +63,7 @@ npm run dev
 
 課文念誦、歌曲與官方音檔請至 [真平語文線上聽](https://listen.jen-pin.com.tw/edge-agua-mxvq)。
 
-練習約 15 分鐘會輕提示休息。
+練習約 30 分鐘會輕提示休息。
 
 ## 內容範圍
 

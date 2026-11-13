@@ -110,7 +110,7 @@ export function touchSession() {
   return state
 }
 
-export function shouldShowRestPrompt(limitMinutes = 15) {
+export function shouldShowRestPrompt(limitMinutes = 30) {
   const state = loadProgress()
   const now = Date.now()
   if (state.restPromptDismissedUntil && now < state.restPromptDismissedUntil) {
@@ -120,7 +120,7 @@ export function shouldShowRestPrompt(limitMinutes = 15) {
   return now - state.sessionStartedAt >= limitMinutes * 60 * 1000
 }
 
-export function dismissRestPrompt(minutes = 15) {
+export function dismissRestPrompt(minutes = 30) {
   const state = loadProgress()
   state.restPromptDismissedUntil = Date.now() + minutes * 60 * 1000
   state.sessionStartedAt = Date.now()

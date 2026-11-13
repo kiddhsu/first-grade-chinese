@@ -852,17 +852,38 @@ a {
   color: var(--label-secondary);
 }
 
+.rest-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: rgba(36, 52, 71, 0.45);
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
 .rest-banner {
-  position: sticky;
-  top: 8px;
-  z-index: 20;
+  width: min(400px, 100%);
+  margin: 0 auto;
   background: #fff8e8;
   color: var(--label);
   border: none;
   border-radius: var(--radius-lg);
-  padding: 14px 16px;
+  padding: 20px 18px;
   display: grid;
-  gap: 10px;
+  gap: 12px;
+  justify-items: center;
+  text-align: center;
+  touch-action: manipulation;
+  box-shadow: 0 8px 28px rgba(36, 52, 71, 0.18);
+}
+
+.rest-banner .actions {
+  width: 100%;
+  justify-content: center;
 }
 
 .muted {
