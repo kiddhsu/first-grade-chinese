@@ -1,4 +1,4 @@
-# 答錯也不會被老師罰寫（first-grade-chinese）
+# 答錯也不會被老師罰寫（first-grade-practice）
 
 給小學一年級生、手機就能玩的**個人自製**練習網頁。首頁可切換 **國語**／**數學**。
 
@@ -12,11 +12,11 @@ npm install
 npm run dev
 ```
 
-本機開發網址為 `http://localhost:5173/first-grade-chinese/`（與 GitHub Pages 子路徑一致）。可加到主畫面（PWA）。
+本機開發網址為 `http://localhost:5173/first-grade-practice/`（與 GitHub Pages 子路徑一致）。可加到主畫面（PWA）。
 
 ## 線上版（GitHub Pages）
 
-正式網址：https://kiddhsu.github.io/first-grade-chinese/
+正式網址：https://kiddhsu.github.io/first-grade-practice/
 
 1. 把變更 push 到 `main`（或在 Actions 手動跑 **Deploy GitHub Pages**）
 2. 第一次請到 repo **Settings → Pages → Build and deployment → Source** 選 **GitHub Actions**
