@@ -1,6 +1,6 @@
 import { Link, useParams } from 'react-router-dom'
 import { ModeProgress } from '../components/ModeProgress'
-import { getLesson } from '../content/kangxuan-grade1-vol1'
+import { getLesson } from '../content/grade1-vol1'
 import { MODE_META, MODE_ORDER } from '../lib/modes'
 import { loadProgress, starKey, STARS_PER_MODE } from '../lib/progress'
 

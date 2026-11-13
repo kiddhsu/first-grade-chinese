@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import HanziWriter from 'hanzi-writer'
 import { GameResult } from '../components/GameResult'
-import { getLesson } from '../content/kangxuan-grade1-vol1'
+import { getLesson } from '../content/grade1-vol1'
 import { addStars, markWrong } from '../lib/progress'
 import { pickN, speak } from '../lib/speech'
 

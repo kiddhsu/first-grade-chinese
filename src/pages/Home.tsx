@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { ModeProgress } from '../components/ModeProgress'
-import { lessons } from '../content/kangxuan-grade1-vol1'
+import { lessons } from '../content/grade1-vol1'
 
 export function Home() {
   return (
@@ -8,6 +8,7 @@ export function Home() {
       <header className="brand">
         <h1>答錯也不會被老師罰寫</h1>
         <p>選一課，把國字逗得乖乖聽話。</p>
+        <p className="brand-note">個人自製練習小站，非出版社官方。</p>
       </header>
 
       <div className="top-nav">
