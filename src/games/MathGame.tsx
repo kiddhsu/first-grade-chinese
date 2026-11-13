@@ -101,7 +101,8 @@ export function MathGame() {
       unit && mode
         ? buildMathRound(unit.kind, mode.id, 6)
         : [],
-    [unit, mode, seed],
+    // 只用穩定 id，避免每次 render 新 mode 物件造成整包重抽、綠框被清掉
+    [unit?.unitId, unit?.kind, mode?.id, seed],
   )
   const [index, setIndex] = useState(0)
   const [score, setScore] = useState(0)

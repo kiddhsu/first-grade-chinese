@@ -6,6 +6,7 @@ const defaultState = (): ProgressState => ({
   stars: {},
   wrongChars: [],
   wrongMath: [],
+  wrongTw: [],
   sessionStartedAt: null,
   restPromptDismissedUntil: null,
 })

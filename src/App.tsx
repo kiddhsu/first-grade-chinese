@@ -7,11 +7,14 @@ import { RadicalGame } from './games/RadicalGame'
 import { RecognizeGame } from './games/RecognizeGame'
 import { SentenceGame } from './games/SentenceGame'
 import { StrokeGame } from './games/StrokeGame'
+import { TwGame } from './games/TwGame'
 import { Home } from './pages/Home'
 import { MathHub } from './pages/MathHub'
 import { MathReview } from './pages/MathReview'
 import { ModeHub } from './pages/ModeHub'
 import { Review } from './pages/Review'
+import { TwHub } from './pages/TwHub'
+import { TwReview } from './pages/TwReview'
 
 export default function App() {
   return (
@@ -23,6 +26,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/review" element={<Review />} />
           <Route path="/math-review" element={<MathReview />} />
+          <Route path="/tw-review" element={<TwReview />} />
           <Route path="/lesson/:lessonId" element={<ModeHub />} />
           <Route path="/lesson/:lessonId/stroke" element={<StrokeGame />} />
           <Route path="/lesson/:lessonId/recognize" element={<RecognizeGame />} />
@@ -31,6 +35,8 @@ export default function App() {
           <Route path="/lesson/:lessonId/sentence" element={<SentenceGame />} />
           <Route path="/math/:unitId" element={<MathHub />} />
           <Route path="/math/:unitId/:modeId" element={<MathGame />} />
+          <Route path="/tw/:lessonId" element={<TwHub />} />
+          <Route path="/tw/:lessonId/:modeId" element={<TwGame />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </div>

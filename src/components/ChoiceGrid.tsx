@@ -48,18 +48,20 @@ export function ChoiceGrid({
 }: Props) {
   const [flash, setFlash] = useState<Flash | null>(null)
   const [busy, setBusy] = useState(false)
+  const busyRef = useRef(false)
   const timerRef = useRef<number | null>(null)
   const correctChoice = choices.find((c) => isCorrect(c))
 
   useEffect(() => {
     setFlash(null)
     setBusy(false)
-    if (timerRef.current) window.clearTimeout(timerRef.current)
+    busyRef.current = false
+    if (timerRef.current != null) window.clearTimeout(timerRef.current)
   }, [roundKey])
 
   useEffect(
     () => () => {
-      if (timerRef.current) window.clearTimeout(timerRef.current)
+      if (timerRef.current != null) window.clearTimeout(timerRef.current)
     },
     [],
   )
@@ -87,7 +89,8 @@ export function ChoiceGrid({
             className={cls}
             disabled={locked || busy}
             onClick={() => {
-              if (locked || busy) return
+              if (locked || busy || busyRef.current) return
+              busyRef.current = true
               const ok = isCorrect(c)
               const next: Flash = {
                 picked: c,
@@ -98,10 +101,11 @@ export function ChoiceGrid({
               setBusy(true)
               onPick(c, ok)
               if (!oneShot && !ok) {
-                if (timerRef.current) window.clearTimeout(timerRef.current)
+                if (timerRef.current != null) window.clearTimeout(timerRef.current)
                 timerRef.current = window.setTimeout(() => {
                   setFlash(null)
                   setBusy(false)
+                  busyRef.current = false
                 }, 650)
               }
             }}

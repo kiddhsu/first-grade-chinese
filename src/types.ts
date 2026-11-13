@@ -52,10 +52,25 @@ export type MathWrongItem = {
     | { type: 'coins'; ones: number; fives: number; tens: number }
 }
 
+/** 閩南語複習用：記住答錯的題 */
+export type TwWrongItem = {
+  id: string
+  lessonId: number
+  mode: string
+  prompt: string
+  highlight?: string
+  hint?: string
+  picture?: string
+  tianzi?: boolean
+  answer: string
+  choices: string[]
+}
+
 export type ProgressState = {
   stars: Record<string, number>
   wrongChars: string[]
   wrongMath: MathWrongItem[]
+  wrongTw: TwWrongItem[]
   sessionStartedAt: number | null
   restPromptDismissedUntil: number | null
 }
