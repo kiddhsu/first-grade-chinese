@@ -16,6 +16,7 @@ import {
   type User,
 } from 'firebase/auth'
 import {
+  dedupeDefaultProfiles,
   deleteCloudProfile,
   pullCloudProfiles,
   pushCloudProfile,
@@ -90,6 +91,7 @@ export function AuthProfileProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     migrateLegacyProgressIfNeeded()
+    dedupeDefaultProfiles()
     refreshProfiles()
 
     if (!cloudEnabled) {
@@ -113,14 +115,20 @@ export function AuthProfileProvider({ children }: { children: ReactNode }) {
           try {
             setSyncing(true)
             const remote = await pullCloudProfiles(db, nextUser.uid)
+            const removed = dedupeDefaultProfiles()
+            for (const id of removed) {
+              await deleteCloudProfile(db, nextUser.uid, id)
+            }
             const store = loadProfileStore()
-            const list = remote.length ? remote : store.profiles
             if (remote.length === 0 && store.profiles.length) {
               for (const p of store.profiles) {
                 await pushCloudProfile(db, nextUser.uid, p)
               }
+            } else if (removed.length) {
+              const kept = store.profiles.find((p) => p.isDefault)
+              if (kept) await pushCloudProfile(db, nextUser.uid, kept)
             }
-            await syncAllProfilesProgress(db, nextUser.uid, list)
+            await syncAllProfilesProgress(db, nextUser.uid, store.profiles)
             refreshProfiles()
           } catch (err) {
             console.error(err)

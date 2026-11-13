@@ -15,7 +15,13 @@ import {
   saveProgressForProfile,
 } from './progress'
 import type { PlayerProfile } from './profiles'
-import { upsertLocalProfiles } from './profiles'
+import {
+  DEFAULT_PROFILE_NAME,
+  loadProfileStore,
+  progressKeyForProfile,
+  replaceLocalProfiles,
+  saveProfileStore,
+} from './profiles'
 
 function profilesCol(db: Firestore, uid: string) {
   return collection(db, 'users', uid, 'profiles')
@@ -32,7 +38,7 @@ export async function pullCloudProfiles(db: Firestore, uid: string) {
   snap.forEach((d) => {
     const data = d.data() as Omit<PlayerProfile, 'id'> & { id?: string }
     const rawName = data.name || '使用者'
-    const name = rawName === '小老師' ? '練習生' : rawName
+    const name = rawName === '小老師' ? DEFAULT_PROFILE_NAME : rawName
     const profile: PlayerProfile = {
       id: d.id,
       name,
@@ -45,11 +51,94 @@ export async function pullCloudProfiles(db: Firestore, uid: string) {
     profiles.push(profile)
     if (name !== rawName) renamed.push(profile)
   })
-  if (profiles.length) upsertLocalProfiles(profiles)
+  if (profiles.length) {
+    const local = loadProfileStore()
+    const remoteIds = new Set(profiles.map((p) => p.id))
+    const keep =
+      profiles.find((p) => p.isDefault) ||
+      profiles.find((p) => p.name === DEFAULT_PROFILE_NAME) ||
+      profiles[0]
+    for (const localP of local.profiles) {
+      if (remoteIds.has(localP.id)) continue
+      const merged = mergeProgress(
+        loadProgressForProfile(keep.id),
+        loadProgressForProfile(localP.id),
+      )
+      saveProgressForProfile(keep.id, merged, { skipCloud: true })
+      try {
+        localStorage.removeItem(progressKeyForProfile(localP.id))
+      } catch {
+        /* ignore */
+      }
+    }
+    replaceLocalProfiles(profiles)
+  }
   for (const p of renamed) {
     await pushCloudProfile(db, uid, p)
   }
   return profiles
+}
+
+/**
+ * 合併多餘的「練習生／預設」使用者，回傳應從雲端刪除的 id。
+ */
+export function dedupeDefaultProfiles(): string[] {
+  const store = loadProfileStore()
+  const candidates = store.profiles.filter(
+    (p) => p.isDefault || p.name === DEFAULT_PROFILE_NAME,
+  )
+  if (candidates.length <= 1) {
+    if (candidates.length === 1 && !candidates[0].isDefault) {
+      saveProfileStore({
+        ...store,
+        profiles: store.profiles.map((p) =>
+          p.id === candidates[0].id ? { ...p, isDefault: true } : p,
+        ),
+      })
+    }
+    return []
+  }
+
+  const kept = [...candidates].sort((a, b) => {
+    if (Boolean(a.isDefault) !== Boolean(b.isDefault)) {
+      return a.isDefault ? -1 : 1
+    }
+    return a.createdAt - b.createdAt
+  })[0]
+
+  let progress = loadProgressForProfile(kept.id)
+  const removedIds: string[] = []
+  for (const p of candidates) {
+    if (p.id === kept.id) continue
+    progress = mergeProgress(progress, loadProgressForProfile(p.id))
+    removedIds.push(p.id)
+    try {
+      localStorage.removeItem(progressKeyForProfile(p.id))
+    } catch {
+      /* ignore */
+    }
+  }
+  saveProgressForProfile(kept.id, progress, { skipCloud: true })
+
+  const profiles = store.profiles
+    .filter((p) => !removedIds.includes(p.id))
+    .map((p) =>
+      p.id === kept.id
+        ? {
+            ...p,
+            name: DEFAULT_PROFILE_NAME,
+            isDefault: true,
+            updatedAt: Date.now(),
+          }
+        : { ...p, isDefault: false },
+    )
+  const activeProfileId =
+    store.activeProfileId && removedIds.includes(store.activeProfileId)
+      ? kept.id
+      : store.activeProfileId
+
+  saveProfileStore({ profiles, activeProfileId })
+  return removedIds
 }
 
 export async function pushCloudProfile(

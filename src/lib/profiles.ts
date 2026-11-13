@@ -135,6 +135,34 @@ export function migrateLegacyProgressIfNeeded() {
   return next
 }
 
+function ensureSingleDefaultFlag(profiles: PlayerProfile[]) {
+  if (profiles.length === 0) return profiles
+  if (profiles.filter((p) => p.isDefault).length === 1) return profiles
+  const preferred =
+    profiles.find((p) => p.isDefault) ||
+    profiles.find((p) => p.name === DEFAULT_PROFILE_NAME) ||
+    [...profiles].sort((a, b) => a.createdAt - b.createdAt)[0]
+  return profiles.map((p) => ({
+    ...p,
+    isDefault: p.id === preferred.id,
+  }))
+}
+
+/** 登入後以雲端名單覆寫本機（避免本機預設與雲端預設各留一份） */
+export function replaceLocalProfiles(profiles: PlayerProfile[]) {
+  const store = loadProfileStore()
+  const list = ensureSingleDefaultFlag(
+    [...profiles].sort((a, b) => a.createdAt - b.createdAt),
+  )
+  const activeProfileId =
+    store.activeProfileId && list.some((p) => p.id === store.activeProfileId)
+      ? store.activeProfileId
+      : null
+  const next: ProfileStore = { profiles: list, activeProfileId }
+  saveProfileStore(next)
+  return next
+}
+
 export function upsertLocalProfiles(profiles: PlayerProfile[]) {
   const store = loadProfileStore()
   const byId = new Map(store.profiles.map((p) => [p.id, p]))
@@ -145,10 +173,9 @@ export function upsertLocalProfiles(profiles: PlayerProfile[]) {
       isDefault: p.isDefault === true || prev?.isDefault === true,
     })
   }
-  let list = [...byId.values()].sort((a, b) => a.createdAt - b.createdAt)
-  if (list.length > 0 && !list.some((p) => p.isDefault)) {
-    list = list.map((p, i) => (i === 0 ? { ...p, isDefault: true } : p))
-  }
+  const list = ensureSingleDefaultFlag(
+    [...byId.values()].sort((a, b) => a.createdAt - b.createdAt),
+  )
   const next: ProfileStore = {
     profiles: list,
     activeProfileId: store.activeProfileId,
