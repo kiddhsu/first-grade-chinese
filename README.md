@@ -19,6 +19,23 @@ npm run dev
 
 國語／數學／閩南語各自獨立線性解鎖：第 1 關永遠可玩；上一關至少玩過 1 種玩法，就解鎖下一關。已練過的關會保持可進入。
 
+### 選角與雲端同步（Firebase）
+
+進站先選「誰要來練習」（Netflix 式選使用者）。可新增多個使用者，進度分開計算。
+
+若設定 Firebase，可用 **Google 登入** 把使用者與進度同步到雲端，換裝置也能接著玩（免費 Spark 方案通常夠用）。
+
+1. 到 [Firebase Console](https://console.firebase.google.com/) 新建專案  
+2. 新增 **Web App**，複製設定值  
+3. 啟用 **Authentication → Google**  
+4. 建立 **Firestore**（生產模式後貼上本 repo 的 [`firestore.rules`](firestore.rules)）  
+5. 複製 [`.env.example`](.env.example) 成 `.env.local`，填入 `VITE_FIREBASE_*`  
+6. `npm run dev` 驗證登入與同步  
+
+未填環境變數時仍可本機選角練習，只是不會跨裝置同步。GitHub Pages 需在 repo **Settings → Secrets** 或 Actions 環境注入同樣的 `VITE_FIREBASE_*`（勿把含金鑰的 `.env` 推進 git）。
+
+Authorized domains 請加上 `localhost` 與 `kiddhsu.github.io`。
+
 ## 線上版（GitHub Pages）
 
 正式網址：https://kiddhsu.github.io/first-grade-practice/
@@ -85,4 +102,4 @@ npm run dev
 
 ## 技術
 
-Vite + React + TypeScript、react-router、vite-plugin-pwa。進度存 `localStorage`，無後端、無登入。
+Vite + React + TypeScript、react-router、vite-plugin-pwa。進度存 `localStorage`（依使用者分開）；可選 Firebase Auth（Google）＋ Firestore 跨裝置同步。

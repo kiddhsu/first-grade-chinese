@@ -84,6 +84,169 @@ a {
   gap: 16px;
 }
 
+.home-profile-bar {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-profile-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 70%;
+}
+
+.home-profile-dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+/* 選使用者（與全站暖色底一致） */
+.profile-screen {
+  min-height: calc(100dvh - 40px);
+  padding: 28px 4px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  color: var(--label);
+}
+
+.profile-screen__title {
+  margin: 0;
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  font-weight: 800;
+  text-align: center;
+}
+
+.profile-screen__hint {
+  margin: 0;
+  color: var(--label-secondary);
+  text-align: center;
+  font-weight: 600;
+  max-width: 28rem;
+}
+
+.profile-screen__error {
+  margin: 0;
+  color: var(--danger);
+  font-weight: 700;
+  text-align: center;
+}
+
+.profile-screen__auth {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+  max-width: 520px;
+  margin-top: 12px;
+}
+
+.profile-tile {
+  width: 110px;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+  color: var(--label);
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.profile-tile:hover .profile-avatar,
+.profile-tile:focus-visible .profile-avatar {
+  outline: 3px solid var(--tint);
+  outline-offset: 3px;
+}
+
+.profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: var(--radius);
+  display: grid;
+  place-items: center;
+  font-size: 2.6rem;
+  box-shadow: 0 8px 20px rgba(36, 52, 71, 0.12);
+}
+
+.profile-avatar--add {
+  background: var(--bg-elevated);
+  color: var(--label-tertiary);
+  font-size: 2.8rem;
+  font-weight: 300;
+  box-shadow: inset 0 0 0 2px var(--separator);
+}
+
+.profile-name {
+  font-size: 0.98rem;
+  font-weight: 700;
+  text-align: center;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-editor {
+  width: min(400px, 100%);
+}
+
+.profile-input {
+  width: 100%;
+  min-height: 48px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--separator);
+  background: var(--bg-elevated);
+  padding: 0 14px;
+  font: inherit;
+  font-weight: 700;
+  color: var(--label);
+}
+
+.profile-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.profile-swatch {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 3px solid transparent;
+}
+
+.profile-swatch--on {
+  border-color: var(--label);
+}
+
+.profile-emoji-pick {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--fill-soft);
+  font-size: 1.4rem;
+}
+
+.profile-emoji-pick--on {
+  outline: 2px solid var(--tint);
+}
+
 .brand {
   display: grid;
   gap: 10px;

@@ -4,6 +4,7 @@ import { LessonCardLink } from '../components/LessonCardLink'
 import { MathUnitProgress } from '../components/MathUnitProgress'
 import { ModeProgress } from '../components/ModeProgress'
 import { TwLessonProgress } from '../components/TwLessonProgress'
+import { useAuthProfile } from '../context/AuthProfileContext'
 import { lessons } from '../content/grade1-vol1'
 import { mathUnits } from '../content/math-hanlin-g1/units'
 import { twLessons } from '../content/taiwanese-jenpin-g1/lessons'
@@ -43,6 +44,8 @@ const REVIEW_PATH: Record<Subject, string> = {
 
 export function Home() {
   const [subject, setSubject] = useState<Subject>(loadSubject)
+  const { activeProfile, clearActiveProfile, user, cloudEnabled } =
+    useAuthProfile()
 
   useEffect(() => {
     try {
@@ -63,6 +66,29 @@ export function Home() {
 
   return (
     <>
+      <div className="top-nav home-profile-bar">
+        {activeProfile && (
+          <span className="chip chip--static home-profile-chip">
+            <span
+              className="home-profile-dot"
+              style={{ background: activeProfile.color }}
+              aria-hidden
+            >
+              {activeProfile.emoji}
+            </span>
+            {activeProfile.name}
+            {cloudEnabled && user ? ' · 已同步' : ''}
+          </span>
+        )}
+        <button
+          type="button"
+          className="chip"
+          onClick={() => clearActiveProfile()}
+        >
+          切換使用者
+        </button>
+      </div>
+
       <header className="brand brand--home">
         <h1>小老師就是妳😊</h1>
         <p>{HOME_LINE[subject]}</p>

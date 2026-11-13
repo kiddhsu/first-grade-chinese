@@ -1,8 +1,9 @@
 import type { GameMode, ProgressState } from '../types'
+import { getActiveProfile, progressKeyForProfile } from './profiles'
 
-const KEY = 'fgc-progress-v1'
+const LEGACY_KEY = 'fgc-progress-v1'
 
-const defaultState = (): ProgressState => ({
+export const defaultProgressState = (): ProgressState => ({
   stars: {},
   wrongChars: [],
   wrongMath: [],
@@ -11,18 +12,65 @@ const defaultState = (): ProgressState => ({
   restPromptDismissedUntil: null,
 })
 
+function activeProgressKey() {
+  const profile = getActiveProfile()
+  if (!profile) return LEGACY_KEY
+  return progressKeyForProfile(profile.id)
+}
+
 export function loadProgress(): ProgressState {
   try {
-    const raw = localStorage.getItem(KEY)
-    if (!raw) return defaultState()
-    return { ...defaultState(), ...JSON.parse(raw) }
+    const raw = localStorage.getItem(activeProgressKey())
+    if (!raw) return defaultProgressState()
+    return { ...defaultProgressState(), ...JSON.parse(raw) }
   } catch {
-    return defaultState()
+    return defaultProgressState()
   }
 }
 
-export function saveProgress(state: ProgressState) {
-  localStorage.setItem(KEY, JSON.stringify(state))
+export function loadProgressForProfile(profileId: string): ProgressState {
+  try {
+    const raw = localStorage.getItem(progressKeyForProfile(profileId))
+    if (!raw) return defaultProgressState()
+    return { ...defaultProgressState(), ...JSON.parse(raw) }
+  } catch {
+    return defaultProgressState()
+  }
+}
+
+type SaveOptions = {
+  /** 略過雲端同步（由 sync 層寫入本機時使用） */
+  skipCloud?: boolean
+}
+
+let cloudSaveHandler: ((profileId: string, state: ProgressState) => void) | null =
+  null
+
+/** 由 AuthProfileProvider 註冊：本機存檔後排程上傳 */
+export function registerCloudProgressSaver(
+  handler: ((profileId: string, state: ProgressState) => void) | null,
+) {
+  cloudSaveHandler = handler
+}
+
+export function saveProgress(state: ProgressState, options: SaveOptions = {}) {
+  const key = activeProgressKey()
+  localStorage.setItem(key, JSON.stringify(state))
+  if (options.skipCloud) return
+  const profile = getActiveProfile()
+  if (profile && cloudSaveHandler) {
+    cloudSaveHandler(profile.id, state)
+  }
+}
+
+export function saveProgressForProfile(
+  profileId: string,
+  state: ProgressState,
+  options: SaveOptions = {},
+) {
+  localStorage.setItem(progressKeyForProfile(profileId), JSON.stringify(state))
+  if (options.skipCloud) return
+  if (cloudSaveHandler) cloudSaveHandler(profileId, state)
 }
 
 export function starKey(lessonId: number, mode: GameMode) {
@@ -125,4 +173,31 @@ export function dismissRestPrompt(minutes = 30) {
   state.restPromptDismissedUntil = Date.now() + minutes * 60 * 1000
   state.sessionStartedAt = Date.now()
   saveProgress(state)
+}
+
+/** 合併兩份進度：星星取較高；錯題合併去重 */
+export function mergeProgress(
+  a: ProgressState,
+  b: ProgressState,
+): ProgressState {
+  const stars: Record<string, number> = { ...a.stars }
+  for (const [k, v] of Object.entries(b.stars)) {
+    stars[k] = Math.max(stars[k] ?? 0, v)
+  }
+  const wrongChars = [...new Set([...a.wrongChars, ...b.wrongChars])].slice(-40)
+  const wrongMathMap = new Map(
+    [...a.wrongMath, ...b.wrongMath].map((item) => [item.id, item]),
+  )
+  const wrongTwMap = new Map(
+    [...a.wrongTw, ...b.wrongTw].map((item) => [item.id, item]),
+  )
+  return {
+    stars,
+    wrongChars,
+    wrongMath: [...wrongMathMap.values()].slice(0, 40),
+    wrongTw: [...wrongTwMap.values()].slice(0, 40),
+    sessionStartedAt: a.sessionStartedAt ?? b.sessionStartedAt,
+    restPromptDismissedUntil:
+      a.restPromptDismissedUntil ?? b.restPromptDismissedUntil,
+  }
 }
