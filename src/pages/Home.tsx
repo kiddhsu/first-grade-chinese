@@ -1,61 +1,21 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { LessonCardLink } from '../components/LessonCardLink'
 import { MathUnitProgress } from '../components/MathUnitProgress'
 import { ModeProgress } from '../components/ModeProgress'
 import { TwLessonProgress } from '../components/TwLessonProgress'
 import { lessons } from '../content/grade1-vol1'
 import { mathUnits } from '../content/math-hanlin-g1/units'
 import { twLessons } from '../content/taiwanese-jenpin-g1/lessons'
+import {
+  getChineseUnlockMap,
+  getMathUnlockMap,
+  getTwUnlockMap,
+} from '../lib/unlock'
 
 type Subject = 'chinese' | 'math' | 'taiwanese'
 
 const SUBJECT_KEY = 'fgc-subject'
-
-function MathUnitCard({
-  unitId,
-  unitNo,
-  title,
-  blurb,
-}: {
-  unitId: number
-  unitNo: number
-  title: string
-  blurb: string
-}) {
-  return (
-    <Link className="lesson-card" to={`/math/${unitId}`}>
-      <span className="eyebrow">第 {unitNo} 單元 · 出發</span>
-      <strong>{title}</strong>
-      <p className="card-blurb">{blurb}</p>
-      <MathUnitProgress unitId={unitId} />
-    </Link>
-  )
-}
-
-function TwLessonCard({
-  lessonId,
-  lessonNo,
-  title,
-  blurb,
-  semester,
-}: {
-  lessonId: number
-  lessonNo: number
-  title: string
-  blurb: string
-  semester: string
-}) {
-  return (
-    <Link className="lesson-card" to={`/tw/${lessonId}`}>
-      <span className="eyebrow">
-        {semester}第 {lessonNo} 課 · 出發
-      </span>
-      <strong>{title}</strong>
-      <p className="card-blurb">{blurb}</p>
-      <TwLessonProgress lessonId={lessonId} />
-    </Link>
-  )
-}
 
 function loadSubject(): Subject {
   try {
@@ -91,6 +51,10 @@ export function Home() {
       /* ignore */
     }
   }, [subject])
+
+  const chineseUnlock = getChineseUnlockMap()
+  const mathUnlock = getMathUnlockMap()
+  const twUnlock = getTwUnlockMap()
 
   const mathUp = mathUnits.filter((u) => u.semester === '一上')
   const mathDown = mathUnits.filter((u) => u.semester === '一下')
@@ -157,15 +121,15 @@ export function Home() {
           <p className="section-label">國語一年級上學期</p>
           <section className="grid-cards">
             {lessons.map((lesson) => (
-              <Link
+              <LessonCardLink
                 key={lesson.lessonId}
-                className="lesson-card"
                 to={`/lesson/${lesson.lessonId}`}
+                unlocked={chineseUnlock[lesson.lessonId]}
+                eyebrow={`第 ${lesson.lessonId} 關 · 出發`}
+                title={lesson.title}
               >
-                <span className="eyebrow">第 {lesson.lessonId} 關 · 出發</span>
-                <strong>{lesson.title}</strong>
                 <ModeProgress lessonId={lesson.lessonId} />
-              </Link>
+              </LessonCardLink>
             ))}
           </section>
         </>
@@ -174,26 +138,32 @@ export function Home() {
           <p className="section-label">數學一年級上學期</p>
           <section className="grid-cards">
             {mathUp.map((unit) => (
-              <MathUnitCard
+              <LessonCardLink
                 key={unit.unitId}
-                unitId={unit.unitId}
-                unitNo={unit.unitNo}
+                to={`/math/${unit.unitId}`}
+                unlocked={mathUnlock[unit.unitId]}
+                eyebrow={`第 ${unit.unitNo} 單元 · 出發`}
                 title={unit.title}
                 blurb={unit.blurb}
-              />
+              >
+                <MathUnitProgress unitId={unit.unitId} />
+              </LessonCardLink>
             ))}
           </section>
 
           <p className="section-label">數學一年級下學期</p>
           <section className="grid-cards">
             {mathDown.map((unit) => (
-              <MathUnitCard
+              <LessonCardLink
                 key={unit.unitId}
-                unitId={unit.unitId}
-                unitNo={unit.unitNo}
+                to={`/math/${unit.unitId}`}
+                unlocked={mathUnlock[unit.unitId]}
+                eyebrow={`第 ${unit.unitNo} 單元 · 出發`}
                 title={unit.title}
                 blurb={unit.blurb}
-              />
+              >
+                <MathUnitProgress unitId={unit.unitId} />
+              </LessonCardLink>
             ))}
           </section>
         </>
@@ -202,28 +172,32 @@ export function Home() {
           <p className="section-label">閩南語一年級上學期</p>
           <section className="grid-cards">
             {twUp.map((lesson) => (
-              <TwLessonCard
+              <LessonCardLink
                 key={lesson.lessonId}
-                lessonId={lesson.lessonId}
-                lessonNo={lesson.lessonNo}
+                to={`/tw/${lesson.lessonId}`}
+                unlocked={twUnlock[lesson.lessonId]}
+                eyebrow={`${lesson.semester}第 ${lesson.lessonNo} 課 · 出發`}
                 title={lesson.title}
                 blurb={lesson.blurb}
-                semester={lesson.semester}
-              />
+              >
+                <TwLessonProgress lessonId={lesson.lessonId} />
+              </LessonCardLink>
             ))}
           </section>
 
           <p className="section-label">閩南語一年級下學期</p>
           <section className="grid-cards">
             {twDown.map((lesson) => (
-              <TwLessonCard
+              <LessonCardLink
                 key={lesson.lessonId}
-                lessonId={lesson.lessonId}
-                lessonNo={lesson.lessonNo}
+                to={`/tw/${lesson.lessonId}`}
+                unlocked={twUnlock[lesson.lessonId]}
+                eyebrow={`${lesson.semester}第 ${lesson.lessonNo} 課 · 出發`}
                 title={lesson.title}
                 blurb={lesson.blurb}
-                semester={lesson.semester}
-              />
+              >
+                <TwLessonProgress lessonId={lesson.lessonId} />
+              </LessonCardLink>
             ))}
           </section>
         </>

@@ -1,8 +1,9 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import { MathUnitProgress } from '../components/MathUnitProgress'
 import { getMathUnit } from '../content/math-hanlin-g1/units'
 import { getMathModes } from '../lib/mathModes'
 import { getMathModeStars, MATH_STARS_PER_MODE } from '../lib/mathProgress'
+import { isMathUnitUnlocked } from '../lib/unlock'
 
 export function MathHub() {
   const { unitId = '' } = useParams()
@@ -18,6 +19,10 @@ export function MathHub() {
         </Link>
       </div>
     )
+  }
+
+  if (!isMathUnitUnlocked(id)) {
+    return <Navigate to="/" replace />
   }
 
   const modes = getMathModes(unit.kind)

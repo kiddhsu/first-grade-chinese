@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import HanziWriter from 'hanzi-writer'
 import { GameResult } from '../components/GameResult'
 import { getLesson } from '../content/grade1-vol1'
 import { addStars, markWrong } from '../lib/progress'
 import { pickN, speak } from '../lib/speech'
+import { isChineseLessonUnlocked } from '../lib/unlock'
 
 type Phase = 'loading' | 'demo' | 'write' | 'done-char'
 
@@ -144,6 +145,10 @@ export function StrokeGame() {
         <Link to="/">回首頁</Link>
       </div>
     )
+  }
+
+  if (!isChineseLessonUnlocked(id)) {
+    return <Navigate to="/" replace />
   }
 
   if (done) {

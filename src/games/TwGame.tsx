@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { ChoiceGrid } from '../components/ChoiceGrid'
 import { ContinueButton } from '../components/ContinueButton'
 import { GameResult } from '../components/GameResult'
@@ -14,6 +14,7 @@ import {
   starsFromCorrect,
 } from '../lib/twProgress'
 import { touchSession } from '../lib/progress'
+import { isTwLessonUnlocked } from '../lib/unlock'
 import { useQuizAdvance } from '../lib/useQuizAdvance'
 
 export function TwGame() {
@@ -63,6 +64,10 @@ export function TwGame() {
         </Link>
       </div>
     )
+  }
+
+  if (!isTwLessonUnlocked(id)) {
+    return <Navigate to="/" replace />
   }
 
   if (doneStars !== null) {

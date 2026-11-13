@@ -456,6 +456,27 @@ a {
   transform: scale(0.985);
 }
 
+.lesson-card--locked {
+  opacity: 0.55;
+  filter: grayscale(0.35);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.lesson-card--locked .eyebrow {
+  color: var(--label-secondary);
+  background: rgba(36, 52, 71, 0.08);
+}
+
+.lesson-card--locked .lock-hint {
+  margin: 0;
+}
+
+.lesson-card--locked:active {
+  opacity: 0.55;
+  transform: none;
+}
+
 .lesson-card .eyebrow,
 .mode-card .eyebrow {
   display: inline-flex;

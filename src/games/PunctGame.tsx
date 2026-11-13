@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import { ChoiceGrid } from '../components/ChoiceGrid'
 import { ContinueButton } from '../components/ContinueButton'
 import { GameResult } from '../components/GameResult'
 import { getLesson } from '../content/grade1-vol1'
 import { addStars, starsFromCorrect } from '../lib/progress'
 import { speak } from '../lib/speech'
+import { isChineseLessonUnlocked } from '../lib/unlock'
 import { useQuizAdvance } from '../lib/useQuizAdvance'
 
 export function PunctGame() {
@@ -52,6 +53,10 @@ export function PunctGame() {
         <Link to="/">回首頁</Link>
       </div>
     )
+  }
+
+  if (!isChineseLessonUnlocked(id)) {
+    return <Navigate to="/" replace />
   }
 
   if (done) {

@@ -15,6 +15,10 @@ npm run dev
 
 本機開發網址為 `http://localhost:5173/first-grade-practice/`（與 GitHub Pages 子路徑一致）。可加到主畫面（PWA）。
 
+### 關卡解鎖
+
+國語／數學／閩南語各自獨立線性解鎖：第 1 關永遠可玩；上一關至少玩過 1 種玩法，就解鎖下一關。已練過的關會保持可進入。
+
 ## 線上版（GitHub Pages）
 
 正式網址：https://kiddhsu.github.io/first-grade-practice/

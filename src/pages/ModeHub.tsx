@@ -1,8 +1,9 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import { ModeProgress } from '../components/ModeProgress'
 import { getLesson } from '../content/grade1-vol1'
 import { MODE_META, MODE_ORDER } from '../lib/modes'
 import { loadProgress, starKey, STARS_PER_MODE } from '../lib/progress'
+import { isChineseLessonUnlocked } from '../lib/unlock'
 
 export function ModeHub() {
   const { lessonId = '1' } = useParams()
@@ -19,6 +20,10 @@ export function ModeHub() {
         </Link>
       </div>
     )
+  }
+
+  if (!isChineseLessonUnlocked(id)) {
+    return <Navigate to="/" replace />
   }
 
   return (

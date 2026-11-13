@@ -1,8 +1,9 @@
-import { Link, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams } from 'react-router-dom'
 import { TwLessonProgress } from '../components/TwLessonProgress'
 import { getTwLesson } from '../content/taiwanese-jenpin-g1/lessons'
 import { getTwModes } from '../lib/twModes'
 import { getTwModeStars, TW_STARS_PER_MODE } from '../lib/twProgress'
+import { isTwLessonUnlocked } from '../lib/unlock'
 
 export function TwHub() {
   const { lessonId = '' } = useParams()
@@ -18,6 +19,10 @@ export function TwHub() {
         </Link>
       </div>
     )
+  }
+
+  if (!isTwLessonUnlocked(id)) {
+    return <Navigate to="/" replace />
   }
 
   const modes = getTwModes()
