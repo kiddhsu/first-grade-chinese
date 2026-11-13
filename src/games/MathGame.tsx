@@ -13,7 +13,7 @@ import {
   starsFromCorrect,
 } from '../lib/mathProgress'
 import { touchSession } from '../lib/progress'
-import { isMathUnitUnlocked } from '../lib/unlock'
+import { getNextMathUnitPath, isMathUnitUnlocked } from '../lib/unlock'
 import { useQuizAdvance } from '../lib/useQuizAdvance'
 
 function MathVisual({
@@ -96,7 +96,7 @@ export function MathGame() {
   const unit = getMathUnit(id)
   const mode = unit ? getMathMode(unit.kind, modeId) : undefined
   const navigate = useNavigate()
-  const [seed, setSeed] = useState(0)
+  const [seed] = useState(0)
   const questions = useMemo(
     () =>
       unit && mode
@@ -145,6 +145,7 @@ export function MathGame() {
   }
 
   if (doneStars !== null) {
+    const nextPath = getNextMathUnitPath(unit.unitId)
     return (
       <GameResult
         stars={doneStars}
@@ -155,14 +156,8 @@ export function MathGame() {
               ? '很棒，再玩一輪會更熟！'
               : '沒關係，再試一次就好。'
         }
-        onAgain={() => {
-          setSeed((s) => s + 1)
-          setIndex(0)
-          setScore(0)
-          setDoneStars(null)
-          setLocked(false)
-        }}
         onBack={() => navigate(`/math/${unit.unitId}`)}
+        onNext={nextPath ? () => navigate(nextPath) : undefined}
       />
     )
   }

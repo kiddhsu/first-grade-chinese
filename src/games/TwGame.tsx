@@ -14,7 +14,7 @@ import {
   starsFromCorrect,
 } from '../lib/twProgress'
 import { touchSession } from '../lib/progress'
-import { isTwLessonUnlocked } from '../lib/unlock'
+import { getNextTwLessonPath, isTwLessonUnlocked } from '../lib/unlock'
 import { useQuizAdvance } from '../lib/useQuizAdvance'
 
 export function TwGame() {
@@ -23,7 +23,7 @@ export function TwGame() {
   const lesson = getTwLesson(id)
   const mode = getTwMode(modeId)
   const navigate = useNavigate()
-  const [seed, setSeed] = useState(0)
+  const [seed] = useState(0)
   const questions = useMemo(
     () => (lesson && mode ? buildTwRound(lesson.lessonId, mode.id, 6) : []),
     // 只用穩定 id，避免每次 render 新 mode 物件造成整包重抽、綠框被清掉
@@ -71,6 +71,7 @@ export function TwGame() {
   }
 
   if (doneStars !== null) {
+    const nextPath = getNextTwLessonPath(lesson.lessonId)
     return (
       <GameResult
         stars={doneStars}
@@ -81,14 +82,8 @@ export function TwGame() {
               ? '很棒，再玩一輪會更熟！'
               : '沒關係，再試一次就好。'
         }
-        onAgain={() => {
-          setSeed((s) => s + 1)
-          setIndex(0)
-          setScore(0)
-          setDoneStars(null)
-          setLocked(false)
-        }}
         onBack={() => navigate(`/tw/${lesson.lessonId}`)}
+        onNext={nextPath ? () => navigate(nextPath) : undefined}
       />
     )
   }

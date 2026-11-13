@@ -6,7 +6,7 @@ import { GameResult } from '../components/GameResult'
 import { allCharsForLesson, getLesson } from '../content/grade1-vol1'
 import { addStars, markWrong, starsFromCorrect } from '../lib/progress'
 import { pickN, shuffle, speak } from '../lib/speech'
-import { isChineseLessonUnlocked } from '../lib/unlock'
+import { getNextChineseLessonPath, isChineseLessonUnlocked } from '../lib/unlock'
 import { useQuizAdvance } from '../lib/useQuizAdvance'
 import type { CharEntry } from '../types'
 
@@ -99,17 +99,13 @@ export function RadicalGame() {
 
   if (done) {
     const stars = starsFromCorrect(score, rounds.length)
+    const nextPath = getNextChineseLessonPath(id)
     return (
       <GameResult
         stars={stars}
         message={`一次找對 ${score} / ${rounds.length} 題`}
-        onAgain={() => {
-          setRounds(build())
-          setIndex(0)
-          setScore(0)
-          setDone(false)
-        }}
         onBack={() => navigate(`/lesson/${id}`)}
+        onNext={nextPath ? () => navigate(nextPath) : undefined}
       />
     )
   }

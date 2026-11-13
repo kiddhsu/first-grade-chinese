@@ -110,6 +110,19 @@ export function ProfileSelect() {
 
   return (
     <div className="profile-screen">
+      {cloudEnabled && user && (
+        <div className="profile-screen__topbar">
+          <button
+            type="button"
+            className="btn btn-ghost profile-screen__logout"
+            onClick={() => signOutUser()}
+            disabled={busy}
+          >
+            登出
+          </button>
+        </div>
+      )}
+
       <h1 className="profile-screen__title">誰要來練習？</h1>
       <p className="profile-screen__hint">
         {cloudEnabled
@@ -119,57 +132,46 @@ export function ProfileSelect() {
           : '先在這台選使用者練習。設定 Firebase 後即可跨裝置同步。'}
       </p>
 
-      {cloudEnabled && (
+      {cloudEnabled && !user && (
         <div className="profile-screen__auth">
-          {user ? (
-            <button
-              type="button"
-              className="btn btn-ghost"
-              onClick={() => signOutUser()}
-              disabled={busy}
-            >
-              登出
-            </button>
-          ) : (
-            <button
-              type="button"
-              className="btn btn-primary"
-              disabled={busy}
-              onClick={async () => {
-                setBusy(true)
-                setError(null)
-                try {
-                  await signInWithGoogle()
-                } catch (err) {
-                  const code =
-                    err && typeof err === 'object' && 'code' in err
-                      ? String((err as { code: unknown }).code)
-                      : ''
-                  if (code === 'auth/unauthorized-domain') {
-                    setError(
-                      '此網域未授權：請到 Firebase Authentication → 設定 → 授權網域，加入目前網址的網域。',
-                    )
-                  } else if (code === 'auth/popup-blocked') {
-                    setError('瀏覽器封鎖了登入視窗，請允許彈出視窗後再試。')
-                  } else if (code === 'auth/popup-closed-by-user') {
-                    setError('登入視窗被關閉，請再試一次。')
-                  } else if (code === 'auth/operation-not-allowed') {
-                    setError('Firebase 尚未啟用 Google 登入，請到 Console 開啟並儲存。')
-                  } else {
-                    setError(
-                      code
-                        ? `Google 登入失敗（${code}）。請確認已啟用 Google，並重新整理後再試。`
-                        : 'Google 登入失敗，請確認已在 Firebase 開啟 Google 登入。',
-                    )
-                  }
-                } finally {
-                  setBusy(false)
+          <button
+            type="button"
+            className="btn btn-primary"
+            disabled={busy}
+            onClick={async () => {
+              setBusy(true)
+              setError(null)
+              try {
+                await signInWithGoogle()
+              } catch (err) {
+                const code =
+                  err && typeof err === 'object' && 'code' in err
+                    ? String((err as { code: unknown }).code)
+                    : ''
+                if (code === 'auth/unauthorized-domain') {
+                  setError(
+                    '此網域未授權：請到 Firebase Authentication → 設定 → 授權網域，加入目前網址的網域。',
+                  )
+                } else if (code === 'auth/popup-blocked') {
+                  setError('瀏覽器封鎖了登入視窗，請允許彈出視窗後再試。')
+                } else if (code === 'auth/popup-closed-by-user') {
+                  setError('登入視窗被關閉，請再試一次。')
+                } else if (code === 'auth/operation-not-allowed') {
+                  setError('Firebase 尚未啟用 Google 登入，請到 Console 開啟並儲存。')
+                } else {
+                  setError(
+                    code
+                      ? `Google 登入失敗（${code}）。請確認已啟用 Google，並重新整理後再試。`
+                      : 'Google 登入失敗，請確認已在 Firebase 開啟 Google 登入。',
+                  )
                 }
-              }}
-            >
-              用 Google 登入同步
-            </button>
-          )}
+              } finally {
+                setBusy(false)
+              }
+            }}
+          >
+            用 Google 登入同步
+          </button>
         </div>
       )}
 

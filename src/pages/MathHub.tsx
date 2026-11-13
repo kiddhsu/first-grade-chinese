@@ -3,7 +3,7 @@ import { MathUnitProgress } from '../components/MathUnitProgress'
 import { getMathUnit } from '../content/math-hanlin-g1/units'
 import { getMathModes } from '../lib/mathModes'
 import { getMathModeStars, MATH_STARS_PER_MODE } from '../lib/mathProgress'
-import { isMathUnitUnlocked } from '../lib/unlock'
+import { getNextMathUnitPath, isMathUnitUnlocked } from '../lib/unlock'
 
 export function MathHub() {
   const { unitId = '' } = useParams()
@@ -26,13 +26,19 @@ export function MathHub() {
   }
 
   const modes = getMathModes(unit.kind)
+  const nextPath = getNextMathUnitPath(unit.unitId)
 
   return (
     <>
       <div className="top-nav">
         <Link className="chip" to="/">
-          ← 換一關
+          ← 回選單
         </Link>
+        {nextPath && (
+          <Link className="chip top-nav__end" to={nextPath}>
+            下一關
+          </Link>
+        )}
       </div>
 
       <header className="brand">

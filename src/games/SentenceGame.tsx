@@ -5,7 +5,7 @@ import { GameResult } from '../components/GameResult'
 import { getLesson } from '../content/grade1-vol1'
 import { addStars, starsFromCorrect } from '../lib/progress'
 import { shuffle, speak } from '../lib/speech'
-import { isChineseLessonUnlocked } from '../lib/unlock'
+import { getNextChineseLessonPath, isChineseLessonUnlocked } from '../lib/unlock'
 import { useQuizAdvance } from '../lib/useQuizAdvance'
 
 export function SentenceGame() {
@@ -69,16 +69,13 @@ export function SentenceGame() {
 
   if (done) {
     const stars = starsFromCorrect(score, patterns.length)
+    const nextPath = getNextChineseLessonPath(id)
     return (
       <GameResult
         stars={stars}
         message={`一次拼對 ${score} / ${patterns.length} 句`}
-        onAgain={() => {
-          setIndex(0)
-          setScore(0)
-          setDone(false)
-        }}
         onBack={() => navigate(`/lesson/${id}`)}
+        onNext={nextPath ? () => navigate(nextPath) : undefined}
       />
     )
   }

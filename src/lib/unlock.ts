@@ -78,3 +78,28 @@ export function isMathUnitUnlocked(unitId: number) {
 export function isTwLessonUnlocked(lessonId: number) {
   return Boolean(getTwUnlockMap()[lessonId])
 }
+
+/** 剛通關後可進的下一課／單元 hub；沒有或未解鎖則回 null */
+export function getNextChineseLessonPath(lessonId: number) {
+  const idx = lessons.findIndex((l) => l.lessonId === lessonId)
+  if (idx < 0 || idx >= lessons.length - 1) return null
+  const nextId = lessons[idx + 1].lessonId
+  if (!isChineseLessonUnlocked(nextId)) return null
+  return `/lesson/${nextId}`
+}
+
+export function getNextMathUnitPath(unitId: number) {
+  const idx = mathUnits.findIndex((u) => u.unitId === unitId)
+  if (idx < 0 || idx >= mathUnits.length - 1) return null
+  const nextId = mathUnits[idx + 1].unitId
+  if (!isMathUnitUnlocked(nextId)) return null
+  return `/math/${nextId}`
+}
+
+export function getNextTwLessonPath(lessonId: number) {
+  const idx = twLessons.findIndex((l) => l.lessonId === lessonId)
+  if (idx < 0 || idx >= twLessons.length - 1) return null
+  const nextId = twLessons[idx + 1].lessonId
+  if (!isTwLessonUnlocked(nextId)) return null
+  return `/tw/${nextId}`
+}

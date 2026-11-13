@@ -5,7 +5,7 @@ import { GameResult } from '../components/GameResult'
 import { getLesson } from '../content/grade1-vol1'
 import { addStars, markWrong } from '../lib/progress'
 import { pickN, speak } from '../lib/speech'
-import { isChineseLessonUnlocked } from '../lib/unlock'
+import { getNextChineseLessonPath, isChineseLessonUnlocked } from '../lib/unlock'
 
 type Phase = 'loading' | 'demo' | 'write' | 'done-char'
 
@@ -153,18 +153,13 @@ export function StrokeGame() {
 
   if (done) {
     const stars = Math.max(1, Math.min(3, 1 + Math.floor(score / 2)))
+    const nextPath = getNextChineseLessonPath(id)
     return (
       <GameResult
         stars={stars}
         message={`寫對 ${score} 個字，失誤 ${mistakes} 次`}
-        onAgain={() => {
-          setQueue(pickN(lesson.writingChars.map((c) => c.char), 5))
-          setIndex(0)
-          setScore(0)
-          setMistakes(0)
-          setDone(false)
-        }}
         onBack={() => navigate(`/lesson/${id}`)}
+        onNext={nextPath ? () => navigate(nextPath) : undefined}
       />
     )
   }

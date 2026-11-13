@@ -3,7 +3,7 @@ import { TwLessonProgress } from '../components/TwLessonProgress'
 import { getTwLesson } from '../content/taiwanese-jenpin-g1/lessons'
 import { getTwModes } from '../lib/twModes'
 import { getTwModeStars, TW_STARS_PER_MODE } from '../lib/twProgress'
-import { isTwLessonUnlocked } from '../lib/unlock'
+import { getNextTwLessonPath, isTwLessonUnlocked } from '../lib/unlock'
 
 export function TwHub() {
   const { lessonId = '' } = useParams()
@@ -26,13 +26,19 @@ export function TwHub() {
   }
 
   const modes = getTwModes()
+  const nextPath = getNextTwLessonPath(lesson.lessonId)
 
   return (
     <>
       <div className="top-nav">
         <Link className="chip" to="/">
-          ← 換一課
+          ← 回選單
         </Link>
+        {nextPath && (
+          <Link className="chip top-nav__end" to={nextPath}>
+            下一關
+          </Link>
+        )}
       </div>
 
       <header className="brand">

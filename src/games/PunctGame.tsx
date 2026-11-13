@@ -6,7 +6,7 @@ import { GameResult } from '../components/GameResult'
 import { getLesson } from '../content/grade1-vol1'
 import { addStars, starsFromCorrect } from '../lib/progress'
 import { speak } from '../lib/speech'
-import { isChineseLessonUnlocked } from '../lib/unlock'
+import { getNextChineseLessonPath, isChineseLessonUnlocked } from '../lib/unlock'
 import { useQuizAdvance } from '../lib/useQuizAdvance'
 
 export function PunctGame() {
@@ -61,16 +61,13 @@ export function PunctGame() {
 
   if (done) {
     const stars = starsFromCorrect(score, items.length)
+    const nextPath = getNextChineseLessonPath(id)
     return (
       <GameResult
         stars={stars}
         message={`一次找對 ${score} / ${items.length} 題`}
-        onAgain={() => {
-          setIndex(0)
-          setScore(0)
-          setDone(false)
-        }}
         onBack={() => navigate(`/lesson/${id}`)}
+        onNext={nextPath ? () => navigate(nextPath) : undefined}
       />
     )
   }

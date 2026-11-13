@@ -3,7 +3,10 @@ import { ModeProgress } from '../components/ModeProgress'
 import { getLesson } from '../content/grade1-vol1'
 import { MODE_META, MODE_ORDER } from '../lib/modes'
 import { loadProgress, starKey, STARS_PER_MODE } from '../lib/progress'
-import { isChineseLessonUnlocked } from '../lib/unlock'
+import {
+  getNextChineseLessonPath,
+  isChineseLessonUnlocked,
+} from '../lib/unlock'
 
 export function ModeHub() {
   const { lessonId = '1' } = useParams()
@@ -26,12 +29,19 @@ export function ModeHub() {
     return <Navigate to="/" replace />
   }
 
+  const nextPath = getNextChineseLessonPath(id)
+
   return (
     <>
       <div className="top-nav">
         <Link className="chip" to="/">
-          ← 換一課
+          ← 回選單
         </Link>
+        {nextPath && (
+          <Link className="chip top-nav__end" to={nextPath}>
+            下一關
+          </Link>
+        )}
       </div>
 
       <header className="brand">
