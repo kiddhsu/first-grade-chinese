@@ -105,7 +105,7 @@ export function SentenceGame() {
     <>
       <div className="top-nav">
         <Link className="chip" to={`/lesson/${id}`}>
-          ← 回大廳
+          ← 回選單
         </Link>
       </div>
       <header className="brand">

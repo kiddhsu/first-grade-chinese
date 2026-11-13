@@ -5,6 +5,7 @@ const KEY = 'fgc-progress-v1'
 const defaultState = (): ProgressState => ({
   stars: {},
   wrongChars: [],
+  wrongMath: [],
   sessionStartedAt: null,
   restPromptDismissedUntil: null,
 })
@@ -62,7 +63,7 @@ export function getLessonStars(lessonId: number) {
   )
 }
 
-/** 首頁／大廳進度：圓點看有沒有玩過（含 0 星），星數另計成績 */
+/** 首頁／選單進度：圓點看有沒有玩過（含 0 星），星數另計成績 */
 export function getLessonProgress(lessonId: number) {
   const state = loadProgress()
   const perMode = LESSON_MODES.map((m) => {

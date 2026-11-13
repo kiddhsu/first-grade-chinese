@@ -18,7 +18,7 @@ export function GameResult({ stars, message, onAgain, onBack }: Props) {
           再鬧一輪
         </button>
         <button type="button" className="btn btn-ghost" onClick={onBack}>
-          回關卡大廳
+          回選單
         </button>
       </div>
     </div>

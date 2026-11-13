@@ -36,9 +36,26 @@ export type GameMode =
   | 'punct'
   | 'sentence'
 
+/** 數學複習用：記住答錯的題（含選項，方便重練） */
+export type MathWrongItem = {
+  id: string
+  kind: string
+  mode: string
+  prompt: string
+  answer: string
+  choices: string[]
+  visual?:
+    | { type: 'dots'; count: number; emoji: string }
+    | { type: 'bars'; a: number; b: number; ask: 'longer' | 'shorter' }
+    | { type: 'shape'; name: string }
+    | { type: 'clock'; hour: number; half: boolean }
+    | { type: 'coins'; ones: number; fives: number; tens: number }
+}
+
 export type ProgressState = {
   stars: Record<string, number>
   wrongChars: string[]
+  wrongMath: MathWrongItem[]
   sessionStartedAt: number | null
   restPromptDismissedUntil: number | null
 }

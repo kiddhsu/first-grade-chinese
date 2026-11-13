@@ -118,6 +118,191 @@ a {
   flex-wrap: wrap;
 }
 
+.subject-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 4px;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.subject-tab {
+  min-height: 48px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--label-secondary);
+  font-weight: 800;
+  font-size: 1.05rem;
+  font-family: inherit;
+}
+
+.subject-tab--on {
+  background: #fff;
+  color: var(--tint-deep);
+  box-shadow: 0 1px 0 rgba(36, 52, 71, 0.06);
+}
+
+.section-label {
+  margin: 8px 4px 0;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--label-secondary);
+}
+
+.card-blurb {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--label-secondary);
+  line-height: 1.4;
+}
+
+.chip--static {
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.math-dots {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 8px 0 16px;
+}
+
+.math-bars {
+  display: grid;
+  gap: 14px;
+  margin: 8px 0 16px;
+}
+
+.math-bar-col {
+  display: grid;
+  gap: 6px;
+}
+
+.math-bar {
+  height: 28px;
+  border-radius: 999px;
+  background: var(--tint);
+  max-width: 100%;
+}
+
+.math-bar--b {
+  background: var(--candy);
+}
+
+.math-shape {
+  width: 120px;
+  height: 120px;
+  margin: 8px auto 16px;
+  background: var(--tint);
+}
+
+.math-shape--circle {
+  border-radius: 50%;
+}
+
+.math-shape--square {
+  border-radius: 12px;
+}
+
+.math-shape--rect {
+  width: 160px;
+  height: 90px;
+  border-radius: 12px;
+}
+
+.math-shape--triangle {
+  width: 0;
+  height: 0;
+  background: transparent;
+  border-left: 60px solid transparent;
+  border-right: 60px solid transparent;
+  border-bottom: 110px solid var(--tint);
+}
+
+.math-clock {
+  display: flex;
+  justify-content: center;
+  margin: 8px 0 16px;
+}
+
+.math-clock__face {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: #fff;
+  border: 6px solid var(--tint-deep);
+}
+
+.math-clock__hand {
+  position: absolute;
+  left: 50%;
+  bottom: 50%;
+  transform-origin: bottom center;
+  border-radius: 999px;
+  background: var(--label);
+}
+
+.math-clock__hand--hour {
+  width: 6px;
+  height: 36px;
+  margin-left: -3px;
+}
+
+.math-clock__hand--minute {
+  width: 4px;
+  height: 52px;
+  margin-left: -2px;
+  background: var(--candy);
+}
+
+.math-clock__center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: var(--tint-deep);
+}
+
+.math-coins {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 8px 0 16px;
+}
+
+.coin {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  color: #7a4d00;
+  background: var(--sun);
+}
+
+.coin--5 {
+  background: #cfd8e3;
+  color: var(--label);
+}
+
+.coin--10 {
+  background: #ffb4a2;
+  color: #7a2e1a;
+}
+
 .chip,
 .btn {
   min-height: 48px;
@@ -375,6 +560,7 @@ a {
   font-weight: 800;
   color: var(--label);
   overflow: hidden;
+  padding: 10px 8px;
   transition: background 0.15s ease, transform 0.12s ease;
 }
 
@@ -390,6 +576,27 @@ a {
 .choice__label {
   position: relative;
   z-index: 1;
+  display: block;
+  max-width: 100%;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.choice__emoji-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 2px 0;
+  width: 100%;
+  justify-items: center;
+  align-items: center;
+}
+
+.choice__emoji-cell {
+  font-size: clamp(0.95rem, 3.8vw, 1.2rem);
+  line-height: 1.15;
 }
 
 .choice__burst {

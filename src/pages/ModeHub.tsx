@@ -15,7 +15,7 @@ export function ModeHub() {
       <div className="panel empty">
         <p>咦，這一課躲起來了。</p>
         <Link className="btn btn-ghost" to="/">
-          回樂園門口
+          回首頁
         </Link>
       </div>
     )

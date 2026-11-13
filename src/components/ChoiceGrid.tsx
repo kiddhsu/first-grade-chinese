@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 
 type Props = {
   choices: string[]
@@ -15,6 +15,27 @@ type Flash = {
   picked: string
   kind: 'correct' | 'wrong'
   bump: number
+}
+
+function isEmojiChar(ch: string) {
+  return /\p{Extended_Pictographic}/u.test(ch) || ch === '⭐' || ch === '★'
+}
+
+/** 連續圖示（如 ⭐⭐⭐⭐⭐）改成每列最多 4 個，避免撐破按鈕 */
+function renderChoiceLabel(label: string): ReactNode {
+  const chars = [...label]
+  if (chars.length >= 4 && chars.every(isEmojiChar)) {
+    return (
+      <span className="choice__emoji-grid" aria-label={`${chars.length} 個`}>
+        {chars.map((ch, i) => (
+          <span key={`${ch}-${i}`} className="choice__emoji-cell">
+            {ch}
+          </span>
+        ))}
+      </span>
+    )
+  }
+  return <span className="choice__label">{label}</span>
 }
 
 export function ChoiceGrid({
@@ -85,7 +106,7 @@ export function ChoiceGrid({
               }
             }}
           >
-            <span className="choice__label">{c}</span>
+            {renderChoiceLabel(c)}
             {showAsCorrect && (
               <span className="choice__burst" key={flash?.bump} aria-hidden>
                 ★

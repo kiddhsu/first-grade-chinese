@@ -64,7 +64,7 @@ export function Review() {
       <div className="panel empty">
         <p className="prompt">複習收工！字們跟你擊掌了</p>
         <Link className="btn btn-primary" to="/">
-          回樂園門口
+          回首頁
         </Link>
       </div>
     )
@@ -74,7 +74,7 @@ export function Review() {
     <>
       <div className="top-nav">
         <Link className="chip" to="/">
-          ← 回門口
+          ← 回首頁
         </Link>
       </div>
       <header className="brand">
