@@ -1,0 +1,63 @@
+{
+  "lessonId": 4,
+  "title": "大個子，小個子",
+  "writingChars": [
+    { "char": "子", "zhuyin": "˙ㄗ", "radical": "子", "words": ["個子", "孩子", "桌子"] },
+    { "char": "小", "zhuyin": "ㄒㄧㄠˇ", "radical": "小", "words": ["小人", "小心", "大小"] },
+    { "char": "課", "zhuyin": "ㄎㄜˋ", "radical": "言", "words": ["上課", "下課", "課本"] },
+    { "char": "兩", "zhuyin": "ㄌㄧㄤˇ", "radical": "一", "words": ["兩個", "兩邊", "兩人"] },
+    { "char": "人", "zhuyin": "ㄖㄣˊ", "radical": "人", "words": ["大人", "好人", "人們"] },
+    { "char": "拉", "zhuyin": "ㄌㄚ", "radical": "手", "words": ["拉手", "拉開", "拉繩"] },
+    { "char": "看", "zhuyin": "ㄎㄢˋ", "radical": "目", "words": ["看見", "好看", "看書"] },
+    { "char": "找", "zhuyin": "ㄓㄠˇ", "radical": "手", "words": ["找到", "找人", "尋找"] },
+    { "char": "隻", "zhuyin": "ㄓ", "radical": "隹", "words": ["一隻", "兩隻", "隻數"] },
+    { "char": "青", "zhuyin": "ㄑㄧㄥ", "radical": "青", "words": ["青蛙", "青草", "青山"] },
+    { "char": "蛙", "zhuyin": "ㄨㄚ", "radical": "虫", "words": ["青蛙", "蛙鳴"] },
+    { "char": "開", "zhuyin": "ㄎㄞ", "radical": "門", "words": ["開心", "打開", "開門"] },
+    { "char": "心", "zhuyin": "ㄒㄧㄣ", "radical": "心", "words": ["開心", "小心", "心情"] }
+  ],
+  "readingChars": [
+    { "char": "跳", "zhuyin": "ㄊㄧㄠˋ", "radical": "足", "words": ["跳躍", "跳高", "跳繩"] },
+    { "char": "見", "zhuyin": "ㄐㄧㄢˋ", "radical": "見", "words": ["看見", "見面", "再見"] },
+    { "char": "繩", "zhuyin": "ㄕㄥˊ", "radical": "糸", "words": ["繩子", "跳繩", "拉繩"] },
+    { "char": "高", "zhuyin": "ㄍㄠ", "radical": "高", "words": ["高個子", "高興", "高低"] },
+    { "char": "興", "zhuyin": "ㄒㄧㄥˋ", "radical": "臼", "words": ["高興", "興趣", "興起"] }
+  ],
+  "sentencePatterns": [
+    {
+      "id": "l4-s1",
+      "prompt": "排出「找到」句子",
+      "tokens": ["兩", "人", "找", "到", "青", "蛙"],
+      "answer": ["兩", "人", "找", "到", "青", "蛙"]
+    },
+    {
+      "id": "l4-s2",
+      "prompt": "排出正確順序",
+      "tokens": ["看", "見", "一", "隻", "青", "蛙"],
+      "answer": ["看", "見", "一", "隻", "青", "蛙"]
+    }
+  ],
+  "punctuationItems": [
+    {
+      "id": "l4-p1",
+      "before": "大個子",
+      "after": "小個子",
+      "options": ["，", "。", "？"],
+      "answer": "，"
+    },
+    {
+      "id": "l4-p2",
+      "before": "我們找到青蛙了",
+      "after": "",
+      "options": ["。", "？", "，"],
+      "answer": "。"
+    },
+    {
+      "id": "l4-p3",
+      "before": "你看見幾隻青蛙",
+      "after": "",
+      "options": ["？", "。", "，"],
+      "answer": "？"
+    }
+  ]
+}

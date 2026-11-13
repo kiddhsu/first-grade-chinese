@@ -1,0 +1,64 @@
+{
+  "lessonId": 3,
+  "title": "秋千",
+  "writingChars": [
+    { "char": "秋", "zhuyin": "ㄑㄧㄡ", "radical": "禾", "words": ["秋天", "秋千", "中秋"] },
+    { "char": "千", "zhuyin": "ㄑㄧㄢ", "radical": "十", "words": ["秋千", "千萬", "千歲"] },
+    { "char": "和", "zhuyin": "ㄏㄜˊ", "radical": "口", "words": ["和平", "和你", "和好"] },
+    { "char": "玩", "zhuyin": "ㄨㄢˊ", "radical": "玉", "words": ["玩耍", "好玩", "玩具"] },
+    { "char": "陪", "zhuyin": "ㄆㄟˊ", "radical": "阜", "words": ["陪伴", "陪玩", "陪我"] },
+    { "char": "高", "zhuyin": "ㄍㄠ", "radical": "高", "words": ["高山", "高興", "高低"] },
+    { "char": "山", "zhuyin": "ㄕㄢ", "radical": "山", "words": ["山水", "高山", "爬山"] },
+    { "char": "到", "zhuyin": "ㄉㄠˋ", "radical": "刀", "words": ["到達", "到了", "來到"] },
+    { "char": "大", "zhuyin": "ㄉㄚˋ", "radical": "大", "words": ["大海", "大小", "大家"] },
+    { "char": "海", "zhuyin": "ㄏㄞˇ", "radical": "水", "words": ["海邊", "大海", "海水"] },
+    { "char": "朋", "zhuyin": "ㄆㄥˊ", "radical": "月", "words": ["朋友", "好朋", "親朋"] },
+    { "char": "友", "zhuyin": "ㄧㄡˇ", "radical": "又", "words": ["朋友", "好友", "友情"] },
+    { "char": "們", "zhuyin": "ㄇㄣˊ", "radical": "人", "words": ["我們", "你們", "朋友們"] },
+    { "char": "起", "zhuyin": "ㄑㄧˇ", "radical": "走", "words": ["一起", "起來", "起立"] }
+  ],
+  "readingChars": [
+    { "char": "盪", "zhuyin": "ㄉㄤˋ", "radical": "水", "words": ["盪秋千", "動盪"] },
+    { "char": "飛", "zhuyin": "ㄈㄟ", "radical": "飛", "words": ["飛高", "飛機", "起飛"] },
+    { "char": "天", "zhuyin": "ㄊㄧㄢ", "radical": "大", "words": ["天空", "明天", "天氣"] },
+    { "char": "樂", "zhuyin": "ㄌㄜˋ", "radical": "木", "words": ["快樂", "樂園", "樂一樂"] },
+    { "char": "園", "zhuyin": "ㄩㄢˊ", "radical": "囗", "words": ["公園", "樂園", "花園"] }
+  ],
+  "sentencePatterns": [
+    {
+      "id": "l3-s1",
+      "prompt": "排出「一起」句子",
+      "tokens": ["朋", "友", "們", "一", "起", "玩"],
+      "answer": ["朋", "友", "們", "一", "起", "玩"]
+    },
+    {
+      "id": "l3-s2",
+      "prompt": "排出正確順序",
+      "tokens": ["到", "高", "山", "和", "大", "海"],
+      "answer": ["到", "高", "山", "和", "大", "海"]
+    }
+  ],
+  "punctuationItems": [
+    {
+      "id": "l3-p1",
+      "before": "朋友們一起玩秋千",
+      "after": "",
+      "options": ["。", "？", "，"],
+      "answer": "。"
+    },
+    {
+      "id": "l3-p2",
+      "before": "你要去高山",
+      "after": "還是大海",
+      "options": ["，", "。", "？"],
+      "answer": "，"
+    },
+    {
+      "id": "l3-p3",
+      "before": "誰來陪我玩",
+      "after": "",
+      "options": ["？", "。", "，"],
+      "answer": "？"
+    }
+  ]
+}

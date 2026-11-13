@@ -1,0 +1,64 @@
+{
+  "lessonId": 5,
+  "title": "比一比",
+  "writingChars": [
+    { "char": "比", "zhuyin": "ㄅㄧˇ", "radical": "比", "words": ["比較", "比賽", "好比"] },
+    { "char": "門", "zhuyin": "ㄇㄣˊ", "radical": "門", "words": ["大門", "門口", "開門"] },
+    { "char": "裡", "zhuyin": "ㄌㄧˇ", "radical": "衣", "words": ["裡面", "這裡", "那裡"] },
+    { "char": "外", "zhuyin": "ㄨㄞˋ", "radical": "夕", "words": ["外面", "門外", "意外"] },
+    { "char": "有", "zhuyin": "ㄧㄡˇ", "radical": "月", "words": ["有趣", "沒有", "所有"] },
+    { "char": "什", "zhuyin": "ㄕㄣˊ", "radical": "人", "words": ["什麼", "為什麼"] },
+    { "char": "麼", "zhuyin": "˙ㄇㄜ", "radical": "麻", "words": ["什麼", "怎麼", "那麼"] },
+    { "char": "不", "zhuyin": "ㄅㄨˋ", "radical": "一", "words": ["不是", "不好", "不同"] },
+    { "char": "同", "zhuyin": "ㄊㄨㄥˊ", "radical": "口", "words": ["相同", "同學", "不同"] },
+    { "char": "早", "zhuyin": "ㄗㄠˇ", "radical": "日", "words": ["早上", "早餐", "早晚"] },
+    { "char": "晚", "zhuyin": "ㄨㄢˇ", "radical": "日", "words": ["晚上", "晚飯", "早晚"] },
+    { "char": "王", "zhuyin": "ㄨㄤˊ", "radical": "玉", "words": ["國王", "大王", "王子"] },
+    { "char": "主", "zhuyin": "ㄓㄨˇ", "radical": "丶", "words": ["主人", "主角", "主意"] },
+    { "char": "又", "zhuyin": "ㄧㄡˋ", "radical": "又", "words": ["又大", "又好", "又來"] }
+  ],
+  "readingChars": [
+    { "char": "差", "zhuyin": "ㄔㄚ", "radical": "工", "words": ["差別", "差不多"] },
+    { "char": "樣", "zhuyin": "ㄧㄤˋ", "radical": "木", "words": ["一樣", "樣子", "這樣"] },
+    { "char": "晴", "zhuyin": "ㄑㄧㄥˊ", "radical": "日", "words": ["晴天", "放晴"] },
+    { "char": "雨", "zhuyin": "ㄩˇ", "radical": "雨", "words": ["下雨", "雨天", "雨水"] },
+    { "char": "亮", "zhuyin": "ㄌㄧㄤˋ", "radical": "亠", "words": ["明亮", "天亮", "漂亮"] }
+  ],
+  "sentencePatterns": [
+    {
+      "id": "l5-s1",
+      "prompt": "排出比較句",
+      "tokens": ["門", "裡", "外", "有", "什", "麼", "不", "同"],
+      "answer": ["門", "裡", "外", "有", "什", "麼", "不", "同"]
+    },
+    {
+      "id": "l5-s2",
+      "prompt": "排出正確順序",
+      "tokens": ["早", "和", "晚", "不", "同"],
+      "answer": ["早", "和", "晚", "不", "同"]
+    }
+  ],
+  "punctuationItems": [
+    {
+      "id": "l5-p1",
+      "before": "裡面和外面有什麼不同",
+      "after": "",
+      "options": ["？", "。", "，"],
+      "answer": "？"
+    },
+    {
+      "id": "l5-p2",
+      "before": "早上很早",
+      "after": "晚上很晚",
+      "options": ["，", "。", "？"],
+      "answer": "，"
+    },
+    {
+      "id": "l5-p3",
+      "before": "王和主長得很像",
+      "after": "",
+      "options": ["。", "？", "，"],
+      "answer": "。"
+    }
+  ]
+}

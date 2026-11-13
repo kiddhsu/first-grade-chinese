@@ -1,0 +1,63 @@
+{
+  "lessonId": 6,
+  "title": "小路",
+  "writingChars": [
+    { "char": "路", "zhuyin": "ㄌㄨˋ", "radical": "足", "words": ["小路", "路口", "走路"] },
+    { "char": "長", "zhuyin": "ㄔㄤˊ", "radical": "長", "words": ["長短", "長大", "長路"] },
+    { "char": "白", "zhuyin": "ㄅㄞˊ", "radical": "白", "words": ["白花", "白天", "白雲"] },
+    { "char": "花", "zhuyin": "ㄏㄨㄚ", "radical": "艸", "words": ["白花", "紅花", "花朵"] },
+    { "char": "紅", "zhuyin": "ㄏㄨㄥˊ", "radical": "糸", "words": ["紅花", "紅色", "紅豆"] },
+    { "char": "走", "zhuyin": "ㄗㄡˇ", "radical": "走", "words": ["走路", "走開", "走走"] },
+    { "char": "在", "zhuyin": "ㄗㄞˋ", "radical": "土", "words": ["在家", "在哪", "現在"] },
+    { "char": "向", "zhuyin": "ㄒㄧㄤˋ", "radical": "口", "words": ["方向", "向前", "向左"] },
+    { "char": "說", "zhuyin": "ㄕㄨㄛ", "radical": "言", "words": ["說話", "說明", "聽說"] },
+    { "char": "朵", "zhuyin": "ㄉㄨㄛˇ", "radical": "木", "words": ["一朵", "花朵", "雲朵"] },
+    { "char": "從", "zhuyin": "ㄘㄨㄥˊ", "radical": "彳", "words": ["從前", "從頭", "從來"] },
+    { "char": "頭", "zhuyin": "ㄊㄡˊ", "radical": "頁", "words": ["從頭", "抬頭", "點頭"] },
+    { "char": "那", "zhuyin": "ㄋㄚˋ", "radical": "邑", "words": ["那裡", "那個", "那麼"] }
+  ],
+  "readingChars": [
+    { "char": "短", "zhuyin": "ㄉㄨㄢˇ", "radical": "矢", "words": ["短短", "長短", "短褲"] },
+    { "char": "話", "zhuyin": "ㄏㄨㄚˋ", "radical": "言", "words": ["說話", "對話", "童話"] },
+    { "char": "邊", "zhuyin": "ㄅㄧㄢ", "radical": "辵", "words": ["路邊", "旁邊", "這邊"] },
+    { "char": "香", "zhuyin": "ㄒㄧㄤ", "radical": "香", "words": ["花香", "香味", "香氣"] },
+    { "char": "旁", "zhuyin": "ㄆㄤˊ", "radical": "方", "words": ["旁邊", "路旁", "兩旁"] }
+  ],
+  "sentencePatterns": [
+    {
+      "id": "l6-s1",
+      "prompt": "排出「也」句子",
+      "tokens": ["白", "花", "紅", "花", "也", "香"],
+      "answer": ["白", "花", "紅", "花", "也", "香"]
+    },
+    {
+      "id": "l6-s2",
+      "prompt": "排出正確順序",
+      "tokens": ["從", "頭", "走", "到", "那", "裡"],
+      "answer": ["從", "頭", "走", "到", "那", "裡"]
+    }
+  ],
+  "punctuationItems": [
+    {
+      "id": "l6-p1",
+      "before": "小路好長",
+      "after": "",
+      "options": ["。", "？", "，"],
+      "answer": "。"
+    },
+    {
+      "id": "l6-p2",
+      "before": "白花",
+      "after": "紅花向我說",
+      "options": ["，", "。", "？"],
+      "answer": "，"
+    },
+    {
+      "id": "l6-p3",
+      "before": "你從哪裡來",
+      "after": "",
+      "options": ["？", "。", "，"],
+      "answer": "？"
+    }
+  ]
+}

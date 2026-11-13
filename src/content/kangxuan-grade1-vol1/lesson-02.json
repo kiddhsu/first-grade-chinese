@@ -1,0 +1,61 @@
+{
+  "lessonId": 2,
+  "title": "這是誰的？",
+  "writingChars": [
+    { "char": "這", "zhuyin": "ㄓㄜˋ", "radical": "辵", "words": ["這裡", "這個", "這樣"] },
+    { "char": "是", "zhuyin": "ㄕˋ", "radical": "日", "words": ["是的", "就是", "不是"] },
+    { "char": "誰", "zhuyin": "ㄕㄨㄟˊ", "radical": "言", "words": ["是誰", "誰的", "找誰"] },
+    { "char": "的", "zhuyin": "˙ㄉㄜ", "radical": "白", "words": ["我的", "你的", "好的"] },
+    { "char": "我", "zhuyin": "ㄨㄛˇ", "radical": "戈", "words": ["我們", "我家", "我的"] },
+    { "char": "分", "zhuyin": "ㄈㄣ", "radical": "刀", "words": ["分享", "分開", "分數"] },
+    { "char": "好", "zhuyin": "ㄏㄠˇ", "radical": "女", "words": ["好人", "好看", "你好"] },
+    { "char": "了", "zhuyin": "˙ㄌㄜ", "radical": "亅", "words": ["好了", "完了", "來了"] },
+    { "char": "啊", "zhuyin": "˙ㄚ", "radical": "口", "words": ["好啊", "是啊", "對啊"] },
+    { "char": "多", "zhuyin": "ㄉㄨㄛ", "radical": "夕", "words": ["多少", "很多", "多久"] },
+    { "char": "個", "zhuyin": "ㄍㄜˋ", "radical": "人", "words": ["一個", "這個", "那個"] }
+  ],
+  "readingChars": [
+    { "char": "麼", "zhuyin": "˙ㄇㄜ", "radical": "麻", "words": ["什麼", "怎麼", "那麼"] },
+    { "char": "兒", "zhuyin": "ㄦˊ", "radical": "兒", "words": ["花兒", "這兒", "那兒"] },
+    { "char": "子", "zhuyin": "˙ㄗ", "radical": "子", "words": ["孩子", "桌子", "椅子"] },
+    { "char": "嗎", "zhuyin": "˙ㄇㄚ", "radical": "口", "words": ["好嗎", "是嗎", "可以嗎"] },
+    { "char": "那", "zhuyin": "ㄋㄚˋ", "radical": "邑", "words": ["那裡", "那個", "那麼"] }
+  ],
+  "sentencePatterns": [
+    {
+      "id": "l2-s1",
+      "prompt": "排出問句",
+      "tokens": ["這", "是", "誰", "的"],
+      "answer": ["這", "是", "誰", "的"]
+    },
+    {
+      "id": "l2-s2",
+      "prompt": "排出答句",
+      "tokens": ["這", "是", "我", "的"],
+      "answer": ["這", "是", "我", "的"]
+    }
+  ],
+  "punctuationItems": [
+    {
+      "id": "l2-p1",
+      "before": "這是誰的",
+      "after": "",
+      "options": ["？", "。", "，"],
+      "answer": "？"
+    },
+    {
+      "id": "l2-p2",
+      "before": "這是我的",
+      "after": "",
+      "options": ["。", "？", "，"],
+      "answer": "。"
+    },
+    {
+      "id": "l2-p3",
+      "before": "好多啊",
+      "after": "分一分",
+      "options": ["，", "。", "？"],
+      "answer": "，"
+    }
+  ]
+}
