@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Navigate, useNavigate } from 'react-router-dom'
 import { useAuthProfile } from '../context/AuthProfileContext'
 import {
+  isDefaultProfile,
   PROFILE_COLORS,
   PROFILE_EMOJIS,
 } from '../lib/profiles'
@@ -20,6 +21,7 @@ export function ProfileSelect() {
     signOutUser,
     selectProfile,
     createProfile,
+    deleteProfile,
   } = useAuthProfile()
 
   const [adding, setAdding] = useState(false)
@@ -28,6 +30,15 @@ export function ProfileSelect() {
   const [emoji, setEmoji] = useState<string>(PROFILE_EMOJIS[0])
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [managing, setManaging] = useState(false)
+  const [nameChecked, setNameChecked] = useState(false)
+  const canManage = profiles.some((p) => !isDefaultProfile(p))
+  const nameMissing = !name.trim()
+  const showNameError = nameChecked && nameMissing
+
+  useEffect(() => {
+    if (!canManage && managing) setManaging(false)
+  }, [canManage, managing])
 
   if (!ready) {
     return (
@@ -55,16 +66,43 @@ export function ProfileSelect() {
   }
 
   const onCreate = async () => {
+    setNameChecked(true)
+    if (nameMissing) return
     setBusy(true)
     setError(null)
     try {
       const profile = await createProfile({ name, color, emoji })
       setAdding(false)
       setName('')
+      setNameChecked(false)
       await selectProfile(profile.id)
       navigate('/', { replace: true })
     } catch {
       setError('新增使用者失敗。')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  const onDelete = async (
+    id: string,
+    profileName: string,
+    locked: boolean,
+  ) => {
+    if (locked) return
+    if (
+      !window.confirm(
+        `確定刪除「${profileName}」？這個使用者的練習進度也會一起刪掉。`,
+      )
+    ) {
+      return
+    }
+    setBusy(true)
+    setError(null)
+    try {
+      await deleteProfile(id)
+    } catch {
+      setError('刪除使用者失敗。')
     } finally {
       setBusy(false)
     }
@@ -141,47 +179,111 @@ export function ProfileSelect() {
       {syncing && <p className="profile-screen__hint">同步中…</p>}
 
       {!adding ? (
-        <div className="profile-grid">
-          {profiles.map((p) => (
-            <button
-              key={p.id}
-              type="button"
-              className="profile-tile"
-              disabled={busy}
-              onClick={() => onPick(p.id)}
-            >
-              <span
-                className="profile-avatar"
-                style={{ background: p.color }}
-                aria-hidden
-              >
-                {p.emoji}
-              </span>
-              <span className="profile-name">{p.name}</span>
-            </button>
-          ))}
-          <button
-            type="button"
-            className="profile-tile profile-tile--add"
-            disabled={busy}
-            onClick={() => setAdding(true)}
+        <>
+          <div
+            className={`profile-grid${managing ? ' profile-grid--managing' : ''}`}
           >
-            <span className="profile-avatar profile-avatar--add" aria-hidden>
-              ＋
-            </span>
-            <span className="profile-name">新增使用者</span>
-          </button>
-        </div>
+            {profiles.map((p) => {
+              const locked = isDefaultProfile(p)
+              return (
+                <div key={p.id} className="profile-tile-wrap">
+                  <div className="profile-avatar-slot">
+                    <button
+                      type="button"
+                      className="profile-avatar"
+                      style={{ background: p.color }}
+                      disabled={busy || managing}
+                      aria-label={`選擇 ${p.name}`}
+                      onClick={() => {
+                        if (managing) return
+                        void onPick(p.id)
+                      }}
+                    >
+                      {p.emoji}
+                    </button>
+                    {!locked && (
+                      <button
+                        type="button"
+                        className="profile-tile-delete"
+                        disabled={busy}
+                        aria-label={`刪除 ${p.name}`}
+                        onClick={() => void onDelete(p.id, p.name, locked)}
+                      >
+                        <svg
+                          className="profile-tile-delete__icon"
+                          viewBox="0 0 10 10"
+                          aria-hidden
+                        >
+                          <path
+                            d="M1 1l8 8M9 1L1 9"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.6"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                  <button
+                    type="button"
+                    className="profile-name"
+                    disabled={busy || managing}
+                    onClick={() => {
+                      if (managing) return
+                      void onPick(p.id)
+                    }}
+                  >
+                    {p.name}
+                  </button>
+                </div>
+              )
+            })}
+            {!managing && (
+              <button
+                type="button"
+                className="profile-tile profile-tile--add"
+                disabled={busy}
+                onClick={() => setAdding(true)}
+              >
+                <span className="profile-avatar profile-avatar--add" aria-hidden>
+                  ＋
+                </span>
+                <span className="profile-name">新增使用者</span>
+              </button>
+            )}
+          </div>
+          {canManage && (
+            <div className="profile-screen__manage">
+              <button
+                type="button"
+                className="btn btn-ghost"
+                disabled={busy}
+                onClick={() => setManaging((v) => !v)}
+              >
+                {managing ? '完成' : '管理'}
+              </button>
+            </div>
+          )}
+        </>
       ) : (
         <div className="profile-editor panel">
           <p className="prompt">幫這位練習生取個名字</p>
           <input
-            className="profile-input"
+            className={`profile-input${showNameError ? ' profile-input--error' : ''}`}
             value={name}
             maxLength={12}
             placeholder="例如：小明"
-            onChange={(e) => setName(e.target.value)}
+            aria-invalid={showNameError}
+            onChange={(e) => {
+              setName(e.target.value)
+              if (e.target.value.trim()) setNameChecked(false)
+            }}
+            onBlur={() => setNameChecked(true)}
           />
+          {showNameError && (
+            <p className="profile-input-hint">請先取個名字</p>
+          )}
           <p className="muted">選顏色</p>
           <div className="profile-swatches">
             {PROFILE_COLORS.map((c) => (
@@ -212,7 +314,10 @@ export function ProfileSelect() {
             <button
               type="button"
               className="btn btn-ghost"
-              onClick={() => setAdding(false)}
+              onClick={() => {
+                setAdding(false)
+                setNameChecked(false)
+              }}
               disabled={busy}
             >
               取消
@@ -221,7 +326,7 @@ export function ProfileSelect() {
               type="button"
               className="btn btn-primary"
               onClick={onCreate}
-              disabled={busy || !name.trim()}
+              disabled={busy}
             >
               完成
             </button>

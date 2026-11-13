@@ -5,6 +5,8 @@ export type PlayerProfile = {
   color: string
   /** 頭像符號 */
   emoji: string
+  /** 系統預設使用者，不可刪除 */
+  isDefault?: boolean
   createdAt: number
   updatedAt: number
 }
@@ -61,18 +63,36 @@ export function createProfileId() {
   return `p-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`
 }
 
-const DEFAULT_PROFILE_NAME = '練習生'
+export const DEFAULT_PROFILE_NAME = '練習生'
 const LEGACY_DEFAULT_PROFILE_NAME = '小老師'
 
-/** 舊預設名稱「小老師」改為「練習生」 */
+export function isDefaultProfile(profile: PlayerProfile) {
+  return profile.isDefault === true
+}
+
+/** 舊預設名稱「小老師」改為「練習生」，並標記系統預設使用者 */
 export function renameLegacyDefaultProfileName() {
   const store = loadProfileStore()
   let changed = false
-  const profiles = store.profiles.map((p) => {
+  let profiles = store.profiles.map((p) => {
     if (p.name !== LEGACY_DEFAULT_PROFILE_NAME) return p
     changed = true
-    return { ...p, name: DEFAULT_PROFILE_NAME, updatedAt: Date.now() }
+    return {
+      ...p,
+      name: DEFAULT_PROFILE_NAME,
+      isDefault: true,
+      updatedAt: Date.now(),
+    }
   })
+
+  if (profiles.length > 0 && !profiles.some((p) => p.isDefault)) {
+    const oldest = [...profiles].sort((a, b) => a.createdAt - b.createdAt)[0]
+    profiles = profiles.map((p) =>
+      p.id === oldest.id ? { ...p, isDefault: true } : p,
+    )
+    changed = true
+  }
+
   if (!changed) return store
   const next: ProfileStore = { ...store, profiles }
   saveProfileStore(next)
@@ -97,6 +117,7 @@ export function migrateLegacyProgressIfNeeded() {
     name: DEFAULT_PROFILE_NAME,
     color: PROFILE_COLORS[0],
     emoji: PROFILE_EMOJIS[0],
+    isDefault: true,
     createdAt: now,
     updatedAt: now,
   }
@@ -118,10 +139,18 @@ export function upsertLocalProfiles(profiles: PlayerProfile[]) {
   const store = loadProfileStore()
   const byId = new Map(store.profiles.map((p) => [p.id, p]))
   for (const p of profiles) {
-    byId.set(p.id, p)
+    const prev = byId.get(p.id)
+    byId.set(p.id, {
+      ...p,
+      isDefault: p.isDefault === true || prev?.isDefault === true,
+    })
+  }
+  let list = [...byId.values()].sort((a, b) => a.createdAt - b.createdAt)
+  if (list.length > 0 && !list.some((p) => p.isDefault)) {
+    list = list.map((p, i) => (i === 0 ? { ...p, isDefault: true } : p))
   }
   const next: ProfileStore = {
-    profiles: [...byId.values()].sort((a, b) => a.createdAt - b.createdAt),
+    profiles: list,
     activeProfileId: store.activeProfileId,
   }
   saveProfileStore(next)
@@ -147,6 +176,7 @@ export function addLocalProfile(input: {
     name: input.name.trim() || '新朋友',
     color: input.color,
     emoji: input.emoji,
+    isDefault: false,
     createdAt: now,
     updatedAt: now,
   }
@@ -173,6 +203,8 @@ export function updateLocalProfile(
 
 export function removeLocalProfile(profileId: string) {
   const store = loadProfileStore()
+  const target = store.profiles.find((p) => p.id === profileId)
+  if (!target || isDefaultProfile(target)) return store
   store.profiles = store.profiles.filter((p) => p.id !== profileId)
   if (store.activeProfileId === profileId) store.activeProfileId = null
   saveProfileStore(store)

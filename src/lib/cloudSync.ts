@@ -1,5 +1,6 @@
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -37,6 +38,7 @@ export async function pullCloudProfiles(db: Firestore, uid: string) {
       name,
       color: data.color || '#3aa0ff',
       emoji: data.emoji || '😊',
+      isDefault: data.isDefault === true || name !== rawName,
       createdAt: data.createdAt || Date.now(),
       updatedAt: name !== rawName ? Date.now() : data.updatedAt || Date.now(),
     }
@@ -59,9 +61,19 @@ export async function pushCloudProfile(
     name: profile.name,
     color: profile.color,
     emoji: profile.emoji,
+    isDefault: profile.isDefault === true,
     createdAt: profile.createdAt,
     updatedAt: profile.updatedAt,
   })
+}
+
+export async function deleteCloudProfile(
+  db: Firestore,
+  uid: string,
+  profileId: string,
+) {
+  await deleteDoc(doc(profilesCol(db, uid), profileId))
+  await deleteDoc(progressDoc(db, uid, profileId))
 }
 
 export async function pullAndMergeProgress(

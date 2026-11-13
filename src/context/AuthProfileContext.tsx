@@ -16,6 +16,7 @@ import {
   type User,
 } from 'firebase/auth'
 import {
+  deleteCloudProfile,
   pullCloudProfiles,
   pushCloudProfile,
   pushCloudProgress,
@@ -31,6 +32,7 @@ import {
   addLocalProfile,
   getActiveProfile,
   loadProfileStore,
+  isDefaultProfile,
   migrateLegacyProgressIfNeeded,
   removeLocalProfile,
   setActiveProfileId,
@@ -234,7 +236,19 @@ export function AuthProfileProvider({ children }: { children: ReactNode }) {
 
   const deleteProfile = useCallback(
     async (profileId: string) => {
+      const target = loadProfileStore().profiles.find((p) => p.id === profileId)
+      if (!target || isDefaultProfile(target)) return
       removeLocalProfile(profileId)
+      const u = userRef.current
+      const db = getFirebaseDb()
+      if (u && db) {
+        try {
+          await deleteCloudProfile(db, u.uid, profileId)
+        } catch (err) {
+          console.error(err)
+          setSyncError('已從這台刪除，但雲端刪除失敗，之後可能又同步回來。')
+        }
+      }
       refreshProfiles()
     },
     [refreshProfiles],

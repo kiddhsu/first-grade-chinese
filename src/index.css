@@ -148,13 +148,35 @@ a {
   justify-content: center;
 }
 
+.profile-screen__manage {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 4px;
+}
+
 .profile-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 24px;
   justify-content: center;
   max-width: 520px;
   margin-top: 12px;
+  padding: 8px 4px 0;
+  overflow: visible;
+}
+
+.profile-tile-wrap {
+  width: 110px;
+  display: grid;
+  gap: 10px;
+  justify-items: center;
+}
+
+.profile-avatar-slot {
+  position: relative;
+  width: 96px;
+  height: 96px;
 }
 
 .profile-tile {
@@ -168,10 +190,59 @@ a {
   padding: 0;
 }
 
-.profile-tile:hover .profile-avatar,
-.profile-tile:focus-visible .profile-avatar {
-  outline: 3px solid var(--tint);
-  outline-offset: 3px;
+.profile-tile-delete {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  box-sizing: border-box;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: #fff;
+  color: var(--danger);
+  border: 2px solid rgba(255, 90, 95, 0.35);
+  box-shadow: 0 2px 8px rgba(36, 52, 71, 0.18);
+  padding: 0;
+  margin: 0;
+  z-index: 2;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.92);
+  transition:
+    opacity 0.15s ease,
+    transform 0.15s ease;
+}
+
+.profile-tile-delete__icon {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  transform: translate(-50%, -50%);
+  display: block;
+  overflow: visible;
+}
+
+.profile-tile-delete:disabled {
+  opacity: 0.5;
+}
+
+/* 桌機：滑鼠移上去才顯示 × */
+@media (hover: hover) and (pointer: fine) {
+  .profile-tile-wrap:hover .profile-tile-delete,
+  .profile-tile-wrap:focus-within .profile-tile-delete {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+  }
+}
+
+/* 手機／管理模式：點「管理」後才顯示 × */
+.profile-grid--managing .profile-tile-delete {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
 }
 
 .profile-avatar {
@@ -182,6 +253,22 @@ a {
   place-items: center;
   font-size: 2.6rem;
   box-shadow: 0 8px 20px rgba(36, 52, 71, 0.12);
+  color: inherit;
+  padding: 0;
+}
+
+.profile-avatar:hover,
+.profile-avatar:focus-visible {
+  outline: 3px solid var(--tint);
+  outline-offset: 2px;
+}
+
+button.profile-name {
+  font: inherit;
+  color: var(--label);
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .profile-avatar--add {
@@ -216,6 +303,19 @@ a {
   font: inherit;
   font-weight: 700;
   color: var(--label);
+  outline: none;
+}
+
+.profile-input--error {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 3px var(--danger-soft);
+}
+
+.profile-input-hint {
+  margin: 0;
+  color: var(--danger);
+  font-size: 0.88rem;
+  font-weight: 700;
 }
 
 .profile-swatches {
