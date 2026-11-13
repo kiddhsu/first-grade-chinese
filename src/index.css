@@ -112,14 +112,6 @@ a {
   padding: 12px 14px;
 }
 
-.brand .brand-note {
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--label-tertiary, #6b7280);
-  background: transparent;
-  padding: 0 4px;
-}
-
 .top-nav {
   display: flex;
   gap: 10px;
