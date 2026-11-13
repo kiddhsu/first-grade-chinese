@@ -53,8 +53,8 @@ export function Home() {
 
   return (
     <>
-      <header className="brand">
-        <h1>答錯也不會被老師罰寫</h1>
+      <header className="brand brand--home">
+        <h1>小老師就是妳😊</h1>
         <p>
           {subject === 'chinese'
             ? '選一課，把國字逗得乖乖聽話。'
@@ -83,14 +83,15 @@ export function Home() {
         </button>
       </div>
 
+      <Link
+        className="review-cta"
+        to={subject === 'chinese' ? '/review' : '/math-review'}
+      >
+        今天再練一輪
+      </Link>
+
       {subject === 'chinese' ? (
         <>
-          <div className="top-nav">
-            <Link className="chip" to="/review">
-              今天再練一輪
-            </Link>
-          </div>
-
           <p className="section-label">國語一年級上學期</p>
           <section className="grid-cards">
             {lessons.map((lesson) => (
@@ -108,12 +109,6 @@ export function Home() {
         </>
       ) : (
         <>
-          <div className="top-nav">
-            <Link className="chip" to="/math-review">
-              今天再練一輪
-            </Link>
-          </div>
-
           <p className="section-label">數學一年級上學期</p>
           <section className="grid-cards">
             {mathUp.map((unit) => (

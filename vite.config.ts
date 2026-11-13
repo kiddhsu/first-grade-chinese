@@ -10,9 +10,9 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "apple-touch-icon.png"],
       manifest: {
-        name: "答錯也不會被老師罰寫",
-        short_name: "寫國字",
-        description: "一年級國字練習：塗鴉寫字、耳朵點名、部首揪團",
+        name: "小老師就是妳😊",
+        short_name: "小老師",
+        description: "一年級國語與數學練習：國字、加減、形狀與時間，手機就能玩",
         theme_color: "#eef7ff",
         background_color: "#eef7ff",
         display: "standalone",
